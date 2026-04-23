@@ -82,7 +82,6 @@ export default function ProfilePage({ viewHistory, onNavigate }: ProfilePageProp
                   <ProductCard
                     key={product.id}
                     product={product}
-                    onAddToCart={() => {}}
                     compact
                   />
                 ))}
