@@ -2,6 +2,71 @@ import { useState } from "react";
 import { PRODUCTS } from "@/data/products";
 import Icon from "@/components/ui/icon";
 
+const ADMIN_PASSWORD = "mishka2026admin";
+
+function AdminLogin({ onSuccess }: { onSuccess: () => void }) {
+  const [value, setValue] = useState("");
+  const [error, setError] = useState(false);
+  const [shake, setShake] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (value === ADMIN_PASSWORD) {
+      onSuccess();
+    } else {
+      setError(true);
+      setShake(true);
+      setValue("");
+      setTimeout(() => setShake(false), 500);
+    }
+  };
+
+  return (
+    <div className="min-h-[70vh] flex items-center justify-center px-4">
+      <div className={`bg-white border border-border rounded-3xl p-8 w-full max-w-sm shadow-xl ${shake ? "animate-scale-in" : ""}`}>
+        <div className="text-center mb-6">
+          <div className="text-5xl mb-3">🐻</div>
+          <h2 className="font-montserrat font-bold text-2xl text-foreground">Вход в админ-панель</h2>
+          <p className="text-muted-foreground text-sm font-ibm mt-1">Доступ только для администратора</p>
+        </div>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-xs font-ibm font-medium text-muted-foreground mb-1.5">Пароль</label>
+            <input
+              type="password"
+              value={value}
+              onChange={e => { setValue(e.target.value); setError(false); }}
+              placeholder="Введите пароль"
+              autoFocus
+              className={`w-full px-4 py-3 border rounded-xl text-sm font-ibm focus:outline-none focus:ring-2 transition-colors
+                ${error
+                  ? "border-red-400 focus:ring-red-300 bg-red-50"
+                  : "border-border focus:ring-[hsl(var(--bear-navy))]"
+                }
+              `}
+            />
+            {error && (
+              <p className="text-red-500 text-xs font-ibm mt-1.5 flex items-center gap-1">
+                <Icon name="AlertCircle" size={12} />
+                Неверный пароль
+              </p>
+            )}
+          </div>
+          <button
+            type="submit"
+            className="w-full bear-gradient text-white font-montserrat font-bold py-3 rounded-xl hover:opacity-90 transition-opacity"
+          >
+            Войти
+          </button>
+        </form>
+        <p className="text-center text-xs text-muted-foreground font-ibm mt-4">
+          Обратитесь к разработчику для получения пароля
+        </p>
+      </div>
+    </div>
+  );
+}
+
 const kpiCards = [
   { icon: "TrendingUp", label: "Выручка за месяц", value: "4 820 000 ₽", change: "+12.4%", up: true },
   { icon: "ShoppingBag", label: "Заказов за месяц", value: "1 247", change: "+8.7%", up: true },
@@ -28,6 +93,11 @@ type AdminTab = "overview" | "products" | "orders" | "users";
 
 export default function AdminPage() {
   const [tab, setTab] = useState<AdminTab>("overview");
+  const [isAuth, setIsAuth] = useState(() => sessionStorage.getItem("admin_auth") === "1");
+
+  if (!isAuth) {
+    return <AdminLogin onSuccess={() => { sessionStorage.setItem("admin_auth", "1"); setIsAuth(true); }} />;
+  }
 
   const tabs: { id: AdminTab; label: string; icon: string }[] = [
     { id: "overview", label: "Обзор", icon: "BarChart3" },
@@ -47,9 +117,18 @@ export default function AdminPage() {
             <p className="text-muted-foreground text-xs font-ibm">МишкаМаркет · Администратор</p>
           </div>
         </div>
-        <div className="flex items-center gap-2 text-xs text-muted-foreground font-ibm bg-white border border-border px-3 py-2 rounded-xl">
-          <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-          Система работает
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 text-xs text-muted-foreground font-ibm bg-white border border-border px-3 py-2 rounded-xl">
+            <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+            Система работает
+          </div>
+          <button
+            onClick={() => { sessionStorage.removeItem("admin_auth"); setIsAuth(false); }}
+            className="flex items-center gap-1.5 text-xs text-red-500 border border-red-200 hover:bg-red-50 px-3 py-2 rounded-xl transition-colors font-ibm"
+          >
+            <Icon name="LogOut" size={13} />
+            Выйти
+          </button>
         </div>
       </div>
 

@@ -3,7 +3,7 @@ import Icon from "@/components/ui/icon";
 
 interface ProductCardProps {
   product: Product;
-  onAddToCart: (product: Product) => void;
+  onAddToCart?: (product: Product) => void;
   onView?: (productId: number) => void;
   compact?: boolean;
 }
@@ -74,7 +74,7 @@ export default function ProductCard({ product, onAddToCart, onView, compact }: P
             )}
           </div>
           <button
-            onClick={(e) => { e.stopPropagation(); onAddToCart(product); }}
+            onClick={(e) => { e.stopPropagation(); if (onAddToCart) onAddToCart(product); }}
             className="flex items-center gap-1 bg-[hsl(var(--bear-navy))] hover:bg-[hsl(220,70%,28%)] text-white text-xs font-ibm font-medium px-3 py-2 rounded-xl transition-colors"
           >
             <Icon name="ShoppingCart" size={13} />
