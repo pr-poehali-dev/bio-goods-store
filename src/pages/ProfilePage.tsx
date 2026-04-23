@@ -1,4 +1,5 @@
 import { Page } from "@/App";
+import { Product } from "@/types";
 import { PRODUCTS } from "@/data/products";
 import Icon from "@/components/ui/icon";
 import ProductCard from "@/components/ProductCard";
@@ -18,7 +19,7 @@ export default function ProfilePage({ viewHistory, onNavigate }: ProfilePageProp
   const viewedProducts = viewHistory
     .map(id => PRODUCTS.find(p => p.id === id))
     .filter(Boolean)
-    .slice(0, 4) as typeof PRODUCTS;
+    .slice(0, 4) as Product[];
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
