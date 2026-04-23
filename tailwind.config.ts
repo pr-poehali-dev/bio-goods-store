@@ -7,6 +7,7 @@ export default {
 		"./components/**/*.{ts,tsx}",
 		"./app/**/*.{ts,tsx}",
 		"./src/**/*.{ts,tsx}",
+			"./1776978889506591559.html"
 	],
 	prefix: "",
 	theme: {
@@ -16,6 +17,10 @@ export default {
 			screens: {
 				'2xl': '1400px'
 			}
+		},
+		fontFamily: {
+			montserrat: ['Montserrat', 'sans-serif'],
+			ibm: ['IBM Plex Sans', 'sans-serif'],
 		},
 		extend: {
 			colors: {
@@ -88,7 +93,10 @@ export default {
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'fade-in': 'fade-in 0.5s ease forwards',
+				'scale-in': 'scale-in 0.3s ease forwards',
+				'bear-float': 'bear-float 3s ease-in-out infinite',
 			}
 		}
 	},
