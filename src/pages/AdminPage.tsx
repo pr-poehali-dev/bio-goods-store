@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { PRODUCTS } from "@/data/products";
 import Icon from "@/components/ui/icon";
 
